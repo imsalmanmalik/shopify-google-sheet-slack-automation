@@ -1,4 +1,4 @@
-# Shopify Data Automation
+# Shopify Google Sheet Slack Automation
 
 This project automates the fetching of Shopify data, appending it to a Google Sheet, and sending notifications to a Slack channel.
 
