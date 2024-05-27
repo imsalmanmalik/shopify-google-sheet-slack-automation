@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t shopfiy-automation:latest .
+          docker build -t shopify-automation:latest .
 
       - name: Scan Docker image for vulnerabilities
         uses: aquasecurity/trivy-action@master
