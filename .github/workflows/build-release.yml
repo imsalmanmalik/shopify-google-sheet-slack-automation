@@ -58,6 +58,11 @@ jobs:
 
       - name: Tag and push Docker image to GHCR
         run: |
-          docker tag shopfiy-automation:latest ghcr.io/${{ github.repository }}/shopfiy-automation: ${{ steps.semrel.outputs.version }}
-          docker push ghcr.io/${{ github.repository }}/shopfiy-automation: ${{ steps.semrel.outputs.version }}
-          docker push ghcr.io/${{ github.repository }}/shopfiy-automation:latest
+          VERSION=${{ steps.semrel.outputs.version }}
+          if [ -z "$VERSION" ]; then
+            echo "Version is empty"
+            exit 1
+          fi
+          docker tag shopify-automation:latest ghcr.io/${{ github.repository }}/shopify-automation:$VERSION
+          docker push ghcr.io/${{ github.repository }}/shopify-automation:$VERSION
+          docker push ghcr.io/${{ github.repository }}/shopify-automation:latest
