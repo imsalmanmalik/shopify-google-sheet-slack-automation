@@ -31,7 +31,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         id: trivy
         with:
-          image-ref: shopfiy-automation:latest
+          image-ref: shopify-automation:latest
           format: 'json'
           output: 'trivy-report.json'
 
