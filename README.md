@@ -80,6 +80,8 @@ If you want to use `requirements.in` to manage your dependencies, you can genera
 
 2. **Run the Docker Container**
 
+    You can either specify environment variables separately or in a env file itself.
+
     ```sh
     docker run --rm \
         -e SHOP_NAME=your_shop_name \
@@ -100,19 +102,39 @@ If you want to use `requirements.in` to manage your dependencies, you can genera
         shopify-automation:latest
     ```
 
+    or
+
+    ```sh
+    docker run --env-file file.env shopify-fetch-script
+    ```
+
 ### GitHub Actions
 
 This project includes two GitHub Actions workflows:
 
-1. **CI/CD Pipeline**: Builds the Docker image, scans it for vulnerabilities, fails the build if HIGH or CRITICAL vulnerabilities are found, and pushes the Docker image to GitHub Container Registry (GHCR).
+1. **CI/CD Pipeline**: Builds the Docker image and pushes the Docker image to GitHub Container Registry (GHCR).
 2. **Scheduled Task**: Runs the Docker image every midnight to update the Google Sheet and send a Slack notification.
+
+You can also run the the `Scheduled Task` pipeline manually by going into the Action (depending on the access).
 
 ## CI/CD Pipeline
 
-![CI/CD Pipeline](/images/ci-cd.png)
+```mermaid
+graph TD
+    A[Push to GitHub] --> B[GitHub Actions]
+    B --> C[Build Docker Image]
+    C  --> D[Push Docker Image to GHCR]
+```
 
 ## Scheduled Task
 
-![Scheduled Task](/images/schedule.png)
+```mermaid
+graph TD
+    A[Cron Job] --> B[GitHub Actions]
+    B --> C[Pull Docker Image]
+    C --> D[Run Docker Container]
+    D --> E[Update Google Sheet]
+    E --> F[Send Slack Notification]
+```
 
-
+Slack channel used for internal testing: `#mm-candidate-salman-malik`
