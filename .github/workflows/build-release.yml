@@ -33,7 +33,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
-      - run: |
+      - name: Print Version Information
+        run: |
           echo "Version: ${{ steps.semrel.outputs.version }}"
           echo "Major Version: ${{ steps.semrel.outputs.version_major }}"
           echo "Minor Version: ${{ steps.semrel.outputs.version_minor }}"
@@ -41,9 +42,12 @@ jobs:
           echo "Changelog: ${{ steps.semrel.outputs.changelog }}"
 
       - name: Build and push to Docker
+        if: ${{ steps.semrel.outputs.version != '' }}
         uses: docker/build-push-action@v5
         with:
           context: .
           load: true
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/shopify-automation:latest,ghcr.io/${{ github.repository_owner }}/shopify-automation:${{ steps.semrel.outputs.version }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/shopify-automation:latest
+            ghcr.io/${{ github.repository_owner }}/shopify-automation:${{ steps.semrel.outputs.version }}
