@@ -2,6 +2,8 @@
 
 This project automates the fetching of Shopify data, appending it to a Google Sheet, and sending notifications to a Slack channel.
 
+Docker image built runs every midnight, to run it manually refer to [Scheduled Task](#scheduled-task)
+
 ## Features
 
 - Fetch orders data from Shopify API.
@@ -115,8 +117,6 @@ This project includes two GitHub Actions workflows:
 1. **CI/CD Pipeline**: Builds the Docker image and pushes the Docker image to GitHub Container Registry (GHCR).
 2. **Scheduled Task**: Runs the Docker image every midnight to update the Google Sheet and send a Slack notification.
 
-You can also run the the `Scheduled Task` pipeline manually by going into the Action (depending on the access).
-
 ## CI/CD Pipeline
 
 ```mermaid
@@ -136,5 +136,9 @@ graph TD
     D --> E[Update Google Sheet]
     E --> F[Send Slack Notification]
 ```
+
+You can also run the the `Scheduled Task` pipeline manually by going into the Action (depending on the access).
+
+<img src="execute_manually_scheduled_task.png" />
 
 Slack channel used for internal testing: `#mm-candidate-salman-malik`
