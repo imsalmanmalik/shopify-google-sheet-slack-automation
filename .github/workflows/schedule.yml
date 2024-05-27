@@ -1,0 +1,44 @@
+name: Scheduled Task
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every midnight
+
+jobs:
+  run-scheduled-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull Docker image
+        run: |
+          docker pull ghcr.io/${{ github.repository }}/my-image:latest
+
+      - name: Run Docker container
+        run: |
+          docker run --rm \
+            -e SHOP_NAME=${{ secrets.SHOP_NAME }} \
+            -e API_VERSION=${{ secrets.API_VERSION }} \
+            -e ADMIN_API_ACCESS_TOKEN=${{ secrets.ADMIN_API_ACCESS_TOKEN }} \
+            -e GOOGLE_SHEET_ID=${{ secrets.GOOGLE_SHEET_ID }} \
+            -e SLACK_API_TOKEN=${{ secrets.SLACK_API_TOKEN }} \
+            -e SLACK_CHANNEL_ID=${{ secrets.SLACK_CHANNEL_ID }} \
+            -e GOOGLE_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }} \
+            -e GOOGLE_PRIVATE_KEY_ID=${{ secrets.GOOGLE_PRIVATE_KEY_ID }} \
+            -e GOOGLE_PRIVATE_KEY="${{ secrets.GOOGLE_PRIVATE_KEY }}" \
+            -e GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }} \
+            -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+            -e GOOGLE_AUTH_URI=${{ secrets.GOOGLE_AUTH_URI }} \
+            -e GOOGLE_TOKEN_URI=${{ secrets.GOOGLE_TOKEN_URI }} \
+            -e GOOGLE_AUTH_PROVIDER_X509_CERT_URL=${{ secrets.GOOGLE_AUTH_PROVIDER_X509_CERT_URL }} \
+            -e GOOGLE_CLIENT_X509_CERT_URL=${{ secrets.GOOGLE_CLIENT_X509_CERT_URL }} \
+            ghcr.io/${{ github.repository }}/my-image:latest
