@@ -1,0 +1,2 @@
+# Ignore specific finding in fetch_shopify_data.py
+/.*fetch_shopify_data.py.*Google (gcp-service-account).*/
