@@ -58,5 +58,5 @@ jobs:
 
       - name: Tag and push Docker image to GHCR
         run: |
-          # docker tag shopify-automation:latest ghcr.io/${{ github.repository }}/shopify-automation:latest
+          docker tag shopify-automation:latest ghcr.io/${{ github.repository }}/shopify-automation:latest
           docker push ghcr.io/${{ github.repository }}/shopify-automation:latest
