@@ -21,7 +21,7 @@ jobs:
 
       - name: Pull Docker image
         run: |
-          docker pull ghcr.io/${{ github.repository }}/my-image:latest
+          docker pull ghcr.io/${{ github.repository }}/shopify-automation:latest
 
       - name: Run Docker container
         run: |
