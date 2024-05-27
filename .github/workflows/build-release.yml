@@ -22,17 +22,10 @@ jobs:
           push: false
           tags: shopify-automation:latest
 
-      - name: Scan Docker image for vulnerabilities
-        uses: aquasecurity/trivy-action@0.20.0
-        id: trivy
+      - name: Scan image
+        uses: anchore/scan-action@v3
         with:
-          image-ref: shopify-automation:latest
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL'
-          ignore-policy: ignore_trivy.rego
+          image: "shopify-automation:latest"
 
       - name: Log in to the GitHub Container registry
         uses: docker/login-action@v3
