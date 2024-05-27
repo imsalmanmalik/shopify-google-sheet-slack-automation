@@ -14,14 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and export to Docker
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          load: true
-          push: false
-          tags: shopify-automation:latest
-
       - name: Log in to the GitHub Container registry
         uses: docker/login-action@v3
         with:
@@ -45,8 +37,10 @@ jobs:
           echo "Patch Version: ${{ steps.semrel.outputs.version_patch }}"
           echo "Changelog: ${{ steps.semrel.outputs.changelog }}"
 
-      - name: Tag and push Docker image to GHCR
-        run: |
-          VERSION=${{ steps.semrel.outputs.version }}
-          docker tag shopify-automation:latest ghcr.io/${{ github.repository_owner }}/shopify-automation:latest
-          docker push ghcr.io/${{ github.repository_owner }}/shopify-automation:latest
+      - name: Build and push to Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/shopify-automation:latest,ghcr.io/${{ github.repository_owner }}/shopify-automation:${{ steps.semrel.outputs.version }}
