@@ -41,4 +41,4 @@ jobs:
             -e GOOGLE_TOKEN_URI=${{ secrets.GOOGLE_TOKEN_URI }} \
             -e GOOGLE_AUTH_PROVIDER_X509_CERT_URL=${{ secrets.GOOGLE_AUTH_PROVIDER_X509_CERT_URL }} \
             -e GOOGLE_CLIENT_X509_CERT_URL=${{ secrets.GOOGLE_CLIENT_X509_CERT_URL }} \
-            ghcr.io/${{ github.repository }}/my-image:latest
+            ghcr.io/${{ github.repository }}/shopify-automation:latest
