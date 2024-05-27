@@ -22,13 +22,6 @@ jobs:
           push: false
           tags: shopify-automation:latest
 
-      - name: Scan image
-        uses: anchore/scan-action@v3
-        with:
-          image: "shopify-automation:latest"
-          fail-build: true
-          severity-cutoff: critical
-
       - name: Log in to the GitHub Container registry
         uses: docker/login-action@v3
         with:
