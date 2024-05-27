@@ -32,15 +32,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os'
           severity: 'CRITICAL'
-          ignore-policy: |
-            package trivy
-
-            ignore[reason] {
-                finding := input[0].Results[_].Secrets[_]
-                finding.Target == "/app/fetch_shopify_data.py"
-                finding.Title == "Google (GCP) Service-account"
-                reason := "Ignore specific GCP service-account secret in fetch_shopify_data.py"
-            }
+          ignore-policy: ignore_trivy.rego
 
       - name: Log in to the GitHub Container registry
         uses: docker/login-action@v3
