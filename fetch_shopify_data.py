@@ -1,6 +1,7 @@
 import os
 import requests
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from slack_sdk import WebClient
@@ -172,12 +173,24 @@ def send_to_slack(message, file_path=None):
     except SlackApiError as e:
         print(f"Error sending message: {e.response['error']}")
 
+def get_previous_month_same_day(date):
+    """
+    Get the same day of the previous month, adjusting if necessary.
+    """
+    previous_month = date - relativedelta(months=1)
+    while True:
+        try:
+            return date.replace(month=previous_month.month, day=date.day)
+        except ValueError:
+            # If the day is out of range for the previous month, adjust by subtracting one day
+            date = date - timedelta(days=1)
+
 def main():
     current_date = datetime.now()
     dates = [
         current_date,
         current_date - timedelta(days=1),
-        current_date.replace(month=current_date.month - 1, day=current_date.day)
+        get_previous_month_same_day(current_date)
     ]
 
     all_data = [['Date', 'Total Orders', 'Total Orders % Diff', 'Total Revenue', 'Total Revenue % Diff',
